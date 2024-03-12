@@ -57,7 +57,7 @@ class CLIActions {
     return value;
   }
 
-  async askUserForParameters(constants = new Constants()) {
+  askUserForParameters(constants = new Constants()) {
     let adults, childrens, babies, travel;
 
     [adults, childrens, babies] = this.promptCli(constants.countPeoples, [
