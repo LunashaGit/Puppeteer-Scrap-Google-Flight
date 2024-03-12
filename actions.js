@@ -68,13 +68,11 @@ class CLIActions {
 
     travel = this.promptCli(constants.roundTrip, travel);
 
-    [adults, childrens, babies, travel] = [
-      adults ?? 0,
-      childrens ?? 0,
-      babies ?? 0,
-      travel,
-    ];
+    [adults, childrens, babies] = [adults, childrens, babies].map((value) => {
+      return value === undefined ? 0 : value;
+    });
 
+    console.log(adults, childrens, babies, travel);
     return [adults, childrens, babies, travel];
   }
 }
