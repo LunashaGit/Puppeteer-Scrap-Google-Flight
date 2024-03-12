@@ -1,6 +1,7 @@
 const { Constants } = require("./constants.js");
+const prompt = require("prompt-sync")();
 
-class Actions {
+class WebActions {
   constructor(browser, page) {
     this.browser = browser;
     this.page = page;
@@ -43,4 +44,39 @@ class Actions {
   }
 }
 
-module.exports = { Actions };
+class CLIActions {
+  constructor() {}
+
+  promptCli(question, value) {
+    let answer = "";
+    while (answer.length === 0) {
+      answer = prompt(question);
+    }
+    if (answer.includes(",")) value = answer.split(",");
+    if (!answer.includes(",")) value = answer;
+    return value;
+  }
+
+  async askUserForParameters(constants = new Constants()) {
+    let adults, childrens, babies, travel;
+
+    [adults, childrens, babies] = this.promptCli(constants.countPeoples, [
+      adults,
+      childrens,
+      babies,
+    ]);
+
+    travel = this.promptCli(constants.roundTrip, travel);
+
+    [adults, childrens, babies, travel] = [
+      adults ?? 0,
+      childrens ?? 0,
+      babies ?? 0,
+      travel,
+    ];
+
+    return [adults, childrens, babies, travel];
+  }
+}
+
+module.exports = { CLIActions, WebActions };
