@@ -72,7 +72,6 @@ class CLIActions {
       return value === undefined ? 0 : value;
     });
 
-    console.log(adults, childrens, babies, travel);
     return [adults, childrens, babies, travel];
   }
 }
