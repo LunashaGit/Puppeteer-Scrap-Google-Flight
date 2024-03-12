@@ -13,7 +13,6 @@ class Actions {
 
   async openUrl(url = null, constants = new Constants()) {
     url = url ?? constants.defaultUrl;
-    console.log(url);
     await this.page.goto(url);
     await this.checkGoogleElement();
   }
@@ -49,5 +48,5 @@ class Actions {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   const actions = new Actions(browser, page);
-  actions.openUrl();
+  await actions.openUrl();
 })();
