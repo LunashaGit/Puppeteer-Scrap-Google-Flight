@@ -3,7 +3,7 @@ class Constants {
   cookiesGoogleSearchPage = "Avant d'accéder à Google";
   refuseCookies = "Tout refuser";
   countPeoples =
-    "For how much adults,children,babies ? (Separate by a comma): ";
+    "For how many adults,children,babies ? (Separate by a comma): ";
   firstDate = "What is the first date ? (YYYY-MM-DD): ";
   lastDate = "What is the the last date ? (YYYY-MM-DD): ";
   firstCity = "What is the first city ? :";
@@ -11,6 +11,8 @@ class Constants {
   trip = "Aller-retour";
   adults = "adults";
   ok = "OK";
+  research = "Rechercher";
+  explore = "explorer";
 }
 
 module.exports = { Constants };

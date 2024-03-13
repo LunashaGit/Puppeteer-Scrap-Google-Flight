@@ -1,5 +1,6 @@
 const { Constants } = require("./constants.js");
 const prompt = require("prompt-sync")();
+const fs = require("fs");
 
 class WebActions {
   constructor(browser, page) {
@@ -23,6 +24,16 @@ class WebActions {
         `xpath///${html}[contains(text(), "${text}")]`,
         { timeout: 5000 }
       );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async searchElementByClass(html, text) {
+    try {
+      return await this.page.$x(`//${html}[@class='${text}')]`, {
+        timeout: 5000,
+      });
     } catch (e) {
       return null;
     }
@@ -69,7 +80,7 @@ class WebActions {
   async typeCities(cities) {
     await this.typeCity(cities.first_city, true);
     await this.tab();
-    await this.typeCity(cities.last_city);
+    await this.typeCity(cities.last_city, true);
   }
 
   async setPeoplesByType(type, value, constants = new Constants()) {
@@ -97,13 +108,56 @@ class WebActions {
     await this.sleep(500);
   }
 
-  async setDates(dates) {
-    for (let i = 0; i < 4; i++) this.tab();
+  async setDates(dates, constants = new Constants()) {
+    const isDatePlaceholder = (date) => date === "/";
+    const isBothDatesPlaceholder =
+      isDatePlaceholder(dates.first_date) && isDatePlaceholder(dates.last_date);
 
-    for (const keys in dates) {
-      await this.sleep(500);
-      this.typeInput(dates[keys]);
-      this.tab();
+    if (isBothDatesPlaceholder) {
+      for (let i = 0; i < 4; i++) {
+        await this.tab();
+      }
+
+      let confirm = await this.searchElementByText("span", constants.research);
+      await confirm.click();
+      await this.sleep(2000);
+
+      const next = await this.page.$$(
+        ".VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-MV7yeb.VfPpkd-LgbsSe-OWXEXe-Bz112c-M1Soyc.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.b9hyVd.MQas1c.LQeN7.qhgRYc.CoZ57.CtwNgb.HhfOU.a2rVxf"
+      );
+
+      for (let i = 0; i < 11; i++) {
+        await next[1].click();
+        await this.sleep(3000);
+      }
+
+      let buttons = await this.page.$$(".CylAxb");
+      let result = await Promise.all(
+        buttons.map(async (t) => {
+          return await t.evaluate((x) => x.textContent);
+        })
+      );
+
+      let groupedResult = [];
+      for (let i = 0; i < result.length; i += 2) {
+        if (result[i + 1]) groupedResult.push([`${result[i]}`, result[i + 1]]);
+      }
+
+      var file = fs.createWriteStream(`output.txt`);
+      groupedResult.forEach((v) => {
+        file.write(v.join(", ") + "\n");
+      });
+      file.end();
+      // need to refacto
+    } else {
+      for (const key in dates) {
+        // Todo later
+        if (Object.hasOwnProperty.call(dates, key)) {
+          await this.sleep(500);
+          await this.typeInput(dates[key]);
+          await this.tab();
+        }
+      }
     }
   }
 
@@ -139,7 +193,8 @@ class CLIActions {
     const answers = questions.map((question) => this.promptCli(question));
 
     const [adults = 0, childrens = 0, babies = 0] = answers[0];
-    const [firstDate, lastDate, firstCity, lastCity] = answers.slice(1);
+    const [firstDate = null, lastDate = null, firstCity, lastCity] =
+      answers.slice(1);
 
     return {
       peoples: {
