@@ -8,6 +8,9 @@ class Constants {
   lastDate = "What is the the last date ? (YYYY-MM-DD): ";
   firstCity = "What is the first city ? :";
   lastCity = "What is the last city ? :";
+  trip = "Aller-retour";
+  adults = "adults";
+  ok = "OK";
 }
 
 module.exports = { Constants };

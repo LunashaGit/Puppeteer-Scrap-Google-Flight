@@ -8,4 +8,5 @@ const { CLIActions, WebActions } = require("./actions.js");
   const page = await browser.newPage();
   const web = new WebActions(browser, page);
   await web.openUrl();
+  await web.completeForm(parameters);
 })();
