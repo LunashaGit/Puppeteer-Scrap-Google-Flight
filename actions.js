@@ -115,7 +115,7 @@ class WebActions {
 
     for (let i = 0; i < count; i++) {
       await next[1].click();
-      await sleep(3000);
+      await this.sleep(3000);
     }
   }
 
@@ -141,6 +141,7 @@ class WebActions {
       file.write(v.join(", ") + "\n");
     });
     file.end();
+    console.log("The file is created");
   }
 
   async setDates(dates, constants = new Constants()) {
