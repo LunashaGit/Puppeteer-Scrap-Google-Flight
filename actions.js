@@ -47,26 +47,17 @@ class WebActions {
 class CLIActions {
   constructor() {}
 
-  promptCli(question, value) {
+  promptCli(question) {
     let answer = "";
-    while (answer.length === 0) {
-      answer = prompt(question);
-    }
-    if (answer.includes(",")) value = answer.split(",");
-    if (!answer.includes(",")) value = answer;
-    return value;
+
+    while (answer.length === 0) answer = prompt(question);
+
+    return answer.includes(",") ? answer.split(",") : answer;
   }
 
   askUserForParameters(constants = new Constants()) {
-    let adults, childrens, babies, travel;
-
-    [adults, childrens, babies] = this.promptCli(constants.countPeoples, [
-      adults,
-      childrens,
-      babies,
-    ]);
-
-    travel = this.promptCli(constants.roundTrip, travel);
+    let [adults, childrens, babies] = this.promptCli(constants.countPeoples);
+    let travel = this.promptCli(constants.roundTrip);
 
     [adults, childrens, babies] = [adults, childrens, babies].map((value) => {
       return value === undefined ? 0 : value;
