@@ -3,10 +3,11 @@ class Constants {
   cookiesGoogleSearchPage = "Avant d'accéder à Google";
   refuseCookies = "Tout refuser";
   countPeoples =
-    "For how much adults,children,babies ? (Separate by a comma) : ";
-  roundTrip = "Is for a round trip ? (Y or n): ";
-  yes = "y";
-  no = "n";
+    "For how much adults,children,babies ? (Separate by a comma): ";
+  firstDate = "What is the first date ? (YYYY-MM-DD): ";
+  lastDate = "What is the the last date ? (YYYY-MM-DD): ";
+  firstCity = "What is the first city ? :";
+  lastCity = "What is the last city ? :";
 }
 
 module.exports = { Constants };

@@ -56,14 +56,28 @@ class CLIActions {
   }
 
   askUserForParameters(constants = new Constants()) {
-    let [adults, childrens, babies] = this.promptCli(constants.countPeoples);
-    let travel = this.promptCli(constants.roundTrip);
+    const questions = [
+      constants.countPeoples,
+      constants.firstDate,
+      constants.lastDate,
+      constants.firstCity,
+      constants.lastCity,
+    ];
 
-    [adults, childrens, babies] = [adults, childrens, babies].map((value) => {
-      return value === undefined ? 0 : value;
-    });
+    const answers = questions.map((question) => this.promptCli(question));
 
-    return [adults, childrens, babies, travel];
+    const [adults = 0, childrens = 0, babies = 0] = answers[0];
+    const [firstDate, lastDate, firstCity, lastCity] = answers.slice(1);
+
+    return [
+      adults,
+      childrens,
+      babies,
+      firstDate,
+      lastDate,
+      firstCity,
+      lastCity,
+    ];
   }
 }
 
